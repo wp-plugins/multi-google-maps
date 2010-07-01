@@ -1,5 +1,5 @@
 === Multi Google Maps ===
-Contributors: aaroncampbell
+Contributors: siripol
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=FZQVHASAY69CC&lc=TH&item_name=google%20map%20plugin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Tags: maps, google, google maps, shortcodes
 Requires at least: 3.0
