@@ -1,12 +1,16 @@
 === Multi Google Maps ===
 Contributors: siripol
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=FZQVHASAY69CC&lc=TH&item_name=google%20map%20plugin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
-Tags: maps, google, google maps, shortcodes
+Tags: maps, google, google maps, shortcodes, multi google maps, address
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 0.1
+Stable tag: 0.2
 
-This plugin supports to insert Multi Google Map V.3 Objects into your post.
+This is first plug-in that allows you to insert Multi Google Map V.3 Objects into your post/blog.
+Next version, this plug-in supports to display Multi Google Map on Popup.
+
+= By the way = If you have any questions or suggestions, please feel free to contact me. (siripol.n at gmail dot com)
+
 
 == Description ==
 
@@ -15,13 +19,13 @@ This plugin supports to insert Multi Google Map V.3 Objects into your post.
 == Requirements ==
 
 1. Wordpress 3.0 or later
-2. Google API version 3.0
+1. Google API version 3.0
 
 == Installation ==
 
 1. Verify that you have PHP5, which is required for this plugin.
-2. Upload the whole 'google-maps-popup' directory to the `/wp-content/plugins/` directory
-3. Activate the plugin through the 'Plugins' menu in WordPress
+1. Upload the whole 'google-maps-popup' directory to the `/wp-content/plugins/` directory
+1. Activate the plugin through the 'Plugins' menu in WordPress
 
 == Frequently Asked Questions == 
 
@@ -35,6 +39,9 @@ This plugin supports to insert Multi Google Map V.3 Objects into your post.
 * Release on 27/06/2010
 * Initial version
 	
+= 0.2 =
+* Fix adding map into posts
+
 
 == Upgrade Notice == 
 
