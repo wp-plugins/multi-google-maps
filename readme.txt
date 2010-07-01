@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=FZQVH
 Tags: maps, google, google maps, shortcodes
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 0.2
+Stable tag: 0.1
 
 This plugin supports to insert Multi Google Map V.3 Objects into your post.
 
