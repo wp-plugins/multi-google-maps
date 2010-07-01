@@ -158,36 +158,36 @@ class GMP
 
         foreach($metadata as $entry)
         {
-            $entry->meta_key   = esc_attr($entry->meta_key);
-            $entry->meta_value = htmlspecialchars($entry->meta_value); // using a <textarea />
-            $entry->meta_id    = (int) $entry->meta_id;
+            $meta_key   = esc_attr($entry->meta_key);
+            $meta_value = htmlspecialchars($entry->meta_value); // using a <textarea />
+            $meta_id    = (int) $entry->meta_id;
 
-            if(strrpos($entry->meta_key,'gmp_marker') !== false)
+            if(strrpos($meta_key,'gmp_marker') !== false)
             {
-                $index = substr($entry->meta_key,  strlen('gmp_marker_'));
+                $index = substr($meta_key,  strlen('gmp_marker_'));
 
                 if(!isset($data[$index]))
                     $data[$index] = array();
 
-                $data[$index]['gmp_marker'] = get_post_meta($post_ID, $entry->meta_key, true) === false?'':get_post_meta($post_ID, $entry->meta_key, true);                
+                $data[$index]['gmp_marker'] = get_post_meta($post_ID, $meta_key, true) === false?'':get_post_meta($post_ID, $meta_key, true);                
             }
-            elseif(strrpos($entry->meta_key,'gmp_description') !== false)
+            elseif(strrpos($meta_key,'gmp_description') !== false)
             {
-                $index = substr($entry->meta_key,  strlen('gmp_description_'));
+                $index = substr($meta_key,  strlen('gmp_description_'));
 
                 if(!isset($data[$index]))
                     $data[$index] = array();
 
-                $data[$index]['gmp_description'] = get_post_meta($post_ID, $entry->meta_key, true) === false?'':get_post_meta($post_ID, $entry->meta_key, true);
+                $data[$index]['gmp_description'] = get_post_meta($post_ID, $meta_key, true) === false?'':get_post_meta($post_ID, $meta_key, true);
             }
-            elseif(strrpos($entry->meta_key,'gmp_address') !== false)
+            elseif(strrpos($meta_key,'gmp_address') !== false)
             {
-                $index = substr($entry->meta_key,  strlen('gmp_address_'));
+                $index = substr($meta_key,  strlen('gmp_address_'));
 
                 if(!isset($data[$index]))
                     $data[$index] = array();
 
-                $data[$index]['gmp_address'] = get_post_meta($post_ID, $entry->meta_key, true);
+                $data[$index]['gmp_address'] = get_post_meta($post_ID, $meta_key, true);
             }         
         }
 
@@ -374,19 +374,19 @@ class GMP
 
         foreach($metadata as $entry)
         {
-            $entry->meta_key = esc_attr($entry->meta_key);
+            $meta_key = esc_attr($entry->meta_key);
 
-            if(strrpos($entry->meta_key,'gmp_marker') !== false)
+            if(strrpos($meta_key,'gmp_marker') !== false)
             {
-                delete_post_meta($post_id, $entry->meta_key);
+                delete_post_meta($post_id, $meta_key);
             }
-            elseif(strrpos($entry->meta_key,'gmp_description') !== false)
+            elseif(strrpos($meta_key,'gmp_description') !== false)
             {
-                delete_post_meta($post_id, $entry->meta_key);
+                delete_post_meta($post_id, $meta_key);
             }
-            elseif(strrpos($entry->meta_key,'gmp_address') !== false)
+            elseif(strrpos($meta_key,'gmp_address') !== false)
             {
-                delete_post_meta($post_id, $entry->meta_key);
+                delete_post_meta($post_id, $meta_key);
             }         
         }
 
