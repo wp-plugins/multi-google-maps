@@ -6,14 +6,14 @@ Requires at least: 3.0
 Tested up to: 3.0
 Stable tag: 0.2.2
 
-This is first plug-in that allows you to insert Multi Google Map V.3 Objects into your post/blog, No require Google Map API Key .
-
-== Description ==
-
 This is first plug-in that allows you to insert Multi Google Map V.3 Objects into your post/blog, **No require Google Map API Key**.
 Next version, this plug-in supports to display Multi Google Map on Popup.
 
 **By the way** , If you have any questions or suggestions, please feel free to contact me. (siripol.n at gmail dot com)
+
+
+== Description ==
+
 
 
 == Requirements ==
