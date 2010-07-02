@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=FZQVH
 Tags: maps, google, google maps, shortcodes, multi google maps, address
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 0.2.2
+Stable tag: 0.3
 
 This is first plug-in that allows you to insert Multi Google Map V.3 Objects into your post/blog, No require Google Map API Key .
 
@@ -30,8 +30,6 @@ Next version, this plug-in supports to display Multi Google Map on Popup.
 
 = How to insert Google Map =
 
-1. 
-
 == Changelog == 
 
 = 0.1.0 =
@@ -44,6 +42,9 @@ Next version, this plug-in supports to display Multi Google Map on Popup.
 = 0.2.1 =
 = 0.2.2 =
 * Fix readme.txt
+
+= 0.3 =
+* Define width and height of each map
 
 == Screenshots == 
 

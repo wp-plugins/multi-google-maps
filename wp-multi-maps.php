@@ -18,11 +18,12 @@ add_shortcode('GMP-Map', array($theGMPs, 'gmp_generate_map'));
 
 class GMP
 {
-    private $noPosts;
-    private $googleMapApi = "http://maps.google.com/maps/api/js?sensor=false";
-
+    private $noPosts;    
     private $curMap;
     private $mapData;
+    private $googleMapApi = "http://maps.google.com/maps/api/js?sensor=false";
+    private $width        = 500;
+    private $height       = 500;
 
     public function __construct()
     {
@@ -54,6 +55,10 @@ class GMP
                 $desc    = $this->mapData[$thePost->ID][$key]['gmp_description'];
                 $address = $this->mapData[$thePost->ID][$key]['gmp_address'];
 
+                $width   = isset($this->mapData[$thePost->ID][$key]['gmp_width']) ?$this->mapData[$thePost->ID][$key]['gmp_width'] :$this->width;
+                $height  = isset($this->mapData[$thePost->ID][$key]['gmp_height'])?$this->mapData[$thePost->ID][$key]['gmp_height']:$this->height;
+                $width  .= 'px';
+                $height .= 'px';
                 $this->curMap[$thePost->ID]++;
                 $mapId   = 'GMPmap_'.$thePost->ID.'_'.$this->curMap[$thePost->ID];                
 
@@ -65,7 +70,8 @@ class GMP
                                background-color: 
                                rgb(229, 227, 223); 
                                overflow: hidden;
-                               height:500px; 
+                               width: $width;
+                               height: $height; 
                                z-index: 0;'>
                     </div>
                     <script>drawMap('$mapId', '$marker', '$desc', '$address', 8);</script>";
@@ -189,6 +195,24 @@ class GMP
 
                 $data[$index]['gmp_address'] = get_post_meta($post_ID, $meta_key, true);
             }         
+            elseif(strrpos($meta_key,'gmp_width') !== false)
+            {
+                $index = substr($meta_key,  strlen('gmp_width_'));
+
+                if(!isset($data[$index]))
+                    $data[$index] = array();
+
+                $data[$index]['gmp_width'] = get_post_meta($post_ID, $meta_key, true);
+            }
+            elseif(strrpos($meta_key,'gmp_height') !== false)
+            {
+                $index = substr($meta_key,  strlen('gmp_height_'));
+
+                if(!isset($data[$index]))
+                    $data[$index] = array();
+
+                $data[$index]['gmp_height'] = get_post_meta($post_ID, $meta_key, true);
+            }
         }
 
         return $data;
@@ -216,6 +240,10 @@ class GMP
             $marker  = $item['gmp_marker'];
             $desc    = $item['gmp_description'];
             $address = $item['gmp_address'];
+
+            //New Feature on 0.3
+            $width  = isset($item['gmp_width'])?$item['gmp_width']:$this->width;
+            $height = isset($item['gmp_width'])?$item['gmp_width']:$this->height;
 
             $html .= "
             <div name='gmpObj' id='gmpObj_$count'>
@@ -249,7 +277,32 @@ class GMP
                             <textarea id='gmp_address_$count' name='gmp_address_$count' 
                                 style='width:400px;height:100px'>$address</textarea>
                         </td>
+                    </tr>";
+            
+            //New Feature on 0.3
+            $html .= "
+                    <tr style='vertical-align:top'>
+                        <td>
+                            Width
+                        </td>
+                        <td>:</td>
+                        <td>
+                            <input type='text' id='gmp_width_$count' name='gmp_width_$count' 
+                                value='$width' style='width:400px'> 
+                        </td>
                     </tr>
+                    <tr style='vertical-align:top'>
+                        <td>
+                            Height
+                        </td>
+                        <td>:</td>
+                        <td>
+                            <input type='text' id='gmp_height_$count' name='gmp_height_$count' 
+                                value='$height' style='width:400px'> 
+                        </td>
+                    </tr>";
+
+            $html .= "
                 </table>
                 <div style='text-align:right'>
                     <input type='button' onclick='send_to_editor(\"[GMP-Map]\");' 
@@ -298,6 +351,26 @@ class GMP
                         <td>
                             <textarea id='gmp_address_$count' name='gmp_address_$count' 
                                 style='width:400px;height:100px'>$address</textarea>
+                        </td>
+                    </tr>
+                    <tr style='vertical-align:top'>
+                        <td style='width:100px'>
+                            Width
+                        </td>
+                        <td style='width:30px'>:</td>
+                        <td>
+                            <input type='text' id='gmp_width_$count' name='gmp_width_$count' 
+                                value='$width' style='width:400px'> 
+                        </td>
+                    </tr>
+                    <tr style='vertical-align:top'>
+                        <td style='width:100px'>
+                            Height
+                        </td>
+                        <td style='width:30px'>:</td>
+                        <td>
+                            <input type='text' id='gmp_height_$count' name='gmp_height_$count' 
+                                value='$height' style='width:400px'> 
                         </td>
                     </tr>
                 </table>
@@ -367,7 +440,26 @@ class GMP
                     $data[$index] = array();
 
                 $data[$index]['gmp_address'] = $value;
-            }         
+            }
+            //New Feature on 0.3
+            elseif(strrpos($key,'gmp_width') !== false)
+            {
+                $index = substr($key,  strlen('gmp_width_'));
+
+                if(!isset($data[$index]))
+                    $data[$index] = array();
+
+                $data[$index]['gmp_width'] = $value;
+            }
+            elseif(strrpos($key,'gmp_height') !== false)
+            {
+                $index = substr($key,  strlen('gmp_height_'));
+
+                if(!isset($data[$index]))
+                    $data[$index] = array();
+
+                $data[$index]['gmp_height'] = $value;
+            }
         }
 
         $metadata = has_meta($post_id);        
@@ -387,7 +479,16 @@ class GMP
             elseif(strrpos($meta_key,'gmp_address') !== false)
             {
                 delete_post_meta($post_id, $meta_key);
-            }         
+            }
+            //New Feature on 0.3
+            elseif(strrpos($meta_key,'gmp_width') !== false)
+            {
+                delete_post_meta($post_id, $meta_key);
+            }
+            elseif(strrpos($meta_key,'gmp_height') !== false)
+            {
+                delete_post_meta($post_id, $meta_key);
+            }
         }
 
         $count = 0;
@@ -399,10 +500,18 @@ class GMP
             $marker  = $item['gmp_marker'];
             $desc    = $item['gmp_description'];
             $address = $item['gmp_address'];
+
+            //New Feature on 0.3
+            $width   = isset($item['gmp_width']) ?$item['gmp_width']:$this->width;
+            $height  = isset($item['gmp_height'])?$item['gmp_height']:$this->height;
             
             add_post_meta($post_id, "gmp_marker_$count"     , $marker, true);
             add_post_meta($post_id, "gmp_description_$count", $desc, true);
             add_post_meta($post_id, "gmp_address_$count"    , $address, true);
+
+            //New Feature on 0.3
+            add_post_meta($post_id, "gmp_height_$count"     , $height, true);
+            add_post_meta($post_id, "gmp_width_$count"      , $width, true);
         }
     }
 }

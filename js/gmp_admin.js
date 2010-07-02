@@ -35,7 +35,32 @@ function removeMap(id)
 			'			<td> ' +
 			'				<textarea style="width: 400px; height: 100px;" name="gmp_address_1" id="gmp_address_1" sourceindex="638"></textarea> ' +
 			'			</td> ' +
-			'		</tr> ' +
+			'		</tr> ';
+
+		parentObj.innerHTML += ''+
+			'		<tr style="vertical-align: top;"> ' +
+			'			<td> ' +
+			'				Width ' +
+			'			</td> ' +
+			'			<td>:</td> ' +
+			'			<td> ' +
+			'				<input type="text" style="width: 400px;" value="" name="gmp_marker_1" id="gmp_marker_1" sourceindex="628">  ' +
+			'			</td> ' +
+			'		<tr style="vertical-align: top;"> ' +
+			'			<td> ' +
+			'				Height ' +
+			'			</td> ' +
+			'			<td>:</td> ' +
+			'			<td> ' +
+			'				<textarea style="width: 400px;" name="gmp_description_1" id="gmp_description_1" sourceindex="633"></textarea> ' +
+			'			</td> ' +
+
+
+
+
+
+
+
 			'	</tbody></table> ' +
 			'  <div style="text-align: right;"> '+
             '    <input type="button" value="Add this Map into Post" onclick="send_to_editor(&quot;[GMP-Map]&quot;);" sourceindex="641"> '+
