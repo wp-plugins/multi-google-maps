@@ -1,0 +1,9 @@
+.feature-filter {
+	-moz-border-radius: 8px;
+	-khtml-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+	border-width: 1px;
+	border-style: solid;
+	padding: 8px 12px 0;
+}

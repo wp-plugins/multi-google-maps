@@ -10,7 +10,7 @@
  */
 
 $theGMPs = new GMP();
-
+add_action('admin_init', array($theGMPs, 'gmp_setting_menu_init'));
 add_action('admin_menu', array($theGMPs, 'gmp_setting_menu_admin'));
 add_action('save_post' , array($theGMPs, 'gmp_save_postdata'),     1);
 add_filter('the_posts' , array($theGMPs, 'gmp_init'));
@@ -29,6 +29,15 @@ class GMP
     {
         $this->curMap  = array();        
         $this->mapData = array();
+    }
+
+    public function gmp_setting_menu_init()
+    {
+        wp_register_style('gmp_style', plugins_url('multi-google-maps/style.css'));
+        wp_enqueue_style( 'gmp_style');
+
+        $this->width  = get_option('gmp_setting_width') !== false ?get_option('gmp_setting_width') :$this->width;
+        $this->height = get_option('gmp_setting_height')!== false ?get_option('gmp_setting_height'):$this->height;
     }
 
     public function gmp_generate_map($attr, $content)
@@ -98,7 +107,6 @@ class GMP
             wp_enqueue_script('GmpLib');
 
         }
-
         return $thePosts;
     }
 
@@ -106,10 +114,10 @@ class GMP
     {
         if( function_exists( 'add_menu_page' )) 
             add_menu_page(
-                'GMP_Menu_1', 
+                'gmp_settings',           
                 __('Google Map'), 
                 'manage_options', 
-                'GMP_Mainmenu_Handle', 
+                'gmp_settings', 
                 array($this,'gmp_options'));
 
         if( function_exists( 'add_meta_box' )) {
@@ -136,20 +144,79 @@ class GMP
             wp_die( __('You do not have sufficient permissions to access this page.') );
         }
         
-        $html = '<br/><br/><br/>
+        if(isset($_POST['Submit']))
+        {
+            delete_option('gmp_setting_width');
+            delete_option('gmp_setting_height');
+
+            $width  = isset($_POST['gmp_setting_width']) ? $_POST['gmp_setting_width'] : $this->width;
+            $height = isset($_POST['gmp_setting_height'])? $_POST['gmp_setting_height']: $this->height;
+            
+            $width  = is_scalar($width)  && (int)$width  > 0? $width  : $this->width;
+            $height = is_scalar($height) && (int)$height > 0? $height : $this->height;
+
+            add_option('gmp_setting_height', $height);
+            add_option('gmp_setting_width', $width);
+
+        }               
+        else
+        {
+            $width  = get_option('gmp_setting_width') !== false ?get_option('gmp_setting_width') :$this->width;
+            $height = get_option('gmp_setting_height')!== false ?get_option('gmp_setting_height'):$this->height;
+        }
+
+        $html = "
+        <style>
+        </style>
+        <br/><br/><br/>
         <div>
-            <div>
-            </div>
-            <div>
-                <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-                    <input type="hidden" name="cmd" value="_s-xclick">
-                    <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
-                    ">
-                    <input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-                    <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+            <div style='text-align:right'>
+                <form action='https://www.paypal.com/cgi-bin/webscr' method='post'>
+                    <input type='hidden' name='cmd' value='_s-xclick'>
+                    <input type='hidden' name='encrypted' value='-----BEGIN PKCS7-----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-----END PKCS7-----'>
+                    <input type='image' src='https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif' border='0' name='submit' alt='PayPal - The safer, easier way to pay online!'>
+                    <img alt='' border='0' src='https://www.paypal.com/en_US/i/scr/pixel.gif' width='1' height='1'>
                 </form>
             </div>
-         </div>';
+            <br/>
+            <div style='text-align:center'>
+                <form method='post' action='".$_SERVER['PHP_SELF']."?page=gmp_settings' >
+                    <div class='feature-filter' style='width:85%'>
+                        <div style='text-align:left'> Default Values Setting <br/><br/></div>
+                        <div style='text-align:left'>
+                            <table>
+                                <tr style='vertical-align:top'>
+                                    <td style='width:100px'>
+                                        Map Width
+                                    </td>
+                                    <td style='width:30px'>:</td>
+                                    <td>
+                                        <input type='text' id='gmp_setting_width' name='gmp_setting_width' 
+                                            value='$width' style='width:400px'> 
+                                    </td>
+                                </tr>
+                                <tr style='vertical-align:top'>
+                                    <td style='width:100px'>
+                                        Map Height
+                                    </td>
+                                    <td style='width:30px'>:</td>
+                                    <td>
+                                        <input type='text' id='gmp_setting_height' name='gmp_setting_height' 
+                                            value='$height' style='width:400px'> 
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <br/>
+                    </div>   
+                    <div style='text-align:left'>
+                        <p class='submit'>
+                            <input type='submit' value='Save Changes' class='button-primary' name='Submit' sourceindex='910'>
+                        </p>
+                    </div>
+                </form>
+            </div>
+         </div>";
 
         echo $html;
     }
@@ -159,7 +226,7 @@ class GMP
         global $wpdb;
 
         $data     = array();
-
+        $keys     = array();
         $metadata = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->postmeta WHERE post_id = %d", $post_ID));
 
         foreach($metadata as $entry)
@@ -173,16 +240,22 @@ class GMP
                 $index = substr($meta_key,  strlen('gmp_marker_'));
 
                 if(!isset($data[$index]))
+                {
                     $data[$index] = array();
+                    $keys[]       = $index;
+                }
 
-                $data[$index]['gmp_marker'] = get_post_meta($post_ID, $meta_key, true) === false?'':get_post_meta($post_ID, $meta_key, true);                
+                $data[$index]['gmp_marker'] = get_post_meta($post_ID, $meta_key, true) === false?'':get_post_meta($post_ID, $meta_key, true);
             }
             elseif(strrpos($meta_key,'gmp_description') !== false)
             {
                 $index = substr($meta_key,  strlen('gmp_description_'));
 
                 if(!isset($data[$index]))
+                {
                     $data[$index] = array();
+                    $keys[]       = $index;
+                }
 
                 $data[$index]['gmp_description'] = get_post_meta($post_ID, $meta_key, true) === false?'':get_post_meta($post_ID, $meta_key, true);
             }
@@ -191,7 +264,10 @@ class GMP
                 $index = substr($meta_key,  strlen('gmp_address_'));
 
                 if(!isset($data[$index]))
+                {
                     $data[$index] = array();
+                    $keys[]       = $index;
+                }
 
                 $data[$index]['gmp_address'] = get_post_meta($post_ID, $meta_key, true);
             }         
@@ -200,7 +276,10 @@ class GMP
                 $index = substr($meta_key,  strlen('gmp_width_'));
 
                 if(!isset($data[$index]))
+                {
                     $data[$index] = array();
+                    $keys[]       = $index;
+                }
 
                 $data[$index]['gmp_width'] = get_post_meta($post_ID, $meta_key, true);
             }
@@ -209,13 +288,29 @@ class GMP
                 $index = substr($meta_key,  strlen('gmp_height_'));
 
                 if(!isset($data[$index]))
+                {
                     $data[$index] = array();
+                    $keys[]       = $index;
+                }
 
                 $data[$index]['gmp_height'] = get_post_meta($post_ID, $meta_key, true);
             }
         }
 
-        return $data;
+        return $this->sortData($keys, $data);
+    }
+
+    private function sortData($keys, $data)
+    {
+        sort($keys);
+        $copyData = array();
+
+        foreach($keys as $key)
+        {
+            $copyData[$key] = $data[$key];
+        }
+
+        return $copyData;
     }
 
     public function gmp_map_box() 
@@ -243,7 +338,10 @@ class GMP
 
             //New Feature on 0.3
             $width  = isset($item['gmp_width'])?$item['gmp_width']:$this->width;
-            $height = isset($item['gmp_width'])?$item['gmp_width']:$this->height;
+            $height = isset($item['gmp_height'])?$item['gmp_height']:$this->height;
+                  
+            $width  = is_scalar($width)  && (int)$width  > 0? $width  : $this->width;
+            $height = is_scalar($height) && (int)$height > 0? $height : $this->height;
 
             $html .= "
             <div name='gmpObj' id='gmpObj_$count'>
@@ -254,7 +352,7 @@ class GMP
                         </td>
                         <td style='width:30px'>:</td>
                         <td>
-                            <input type='text' id='gmp_marker_$count' name='gmp_marker_$count' 
+                            <input type='text' id='gmp_marker_data_$count' name='gmp_marker_data_$count' 
                                 value='$marker' style='width:400px'> 
                         </td>
                     </tr>
@@ -264,7 +362,7 @@ class GMP
                         </td>
                         <td>:</td>
                         <td>
-                            <textarea id='gmp_description_$count' name='gmp_description_$count' 
+                            <textarea id='gmp_description_data_$count' name='gmp_description_data_$count' 
                                 style='width:400px'>$desc</textarea>
                         </td>
                     </tr>
@@ -274,7 +372,7 @@ class GMP
                         </td>
                         <td>:</td>
                         <td>
-                            <textarea id='gmp_address_$count' name='gmp_address_$count' 
+                            <textarea id='gmp_address_data_$count' name='gmp_address_data_$count' 
                                 style='width:400px;height:100px'>$address</textarea>
                         </td>
                     </tr>";
@@ -287,7 +385,7 @@ class GMP
                         </td>
                         <td>:</td>
                         <td>
-                            <input type='text' id='gmp_width_$count' name='gmp_width_$count' 
+                            <input type='text' id='gmp_width_data_$count' name='gmp_width_data_$count' 
                                 value='$width' style='width:400px'> 
                         </td>
                     </tr>
@@ -297,7 +395,7 @@ class GMP
                         </td>
                         <td>:</td>
                         <td>
-                            <input type='text' id='gmp_height_$count' name='gmp_height_$count' 
+                            <input type='text' id='gmp_height_data_$count' name='gmp_height_data_$count' 
                                 value='$height' style='width:400px'> 
                         </td>
                     </tr>";
@@ -329,7 +427,7 @@ class GMP
                         </td>
                         <td style='width:30px'>:</td>
                         <td>
-                            <input type='text' id='gmp_marker_$count' name='gmp_marker_$count' 
+                            <input type='text' id='gmp_marker_data_$count' name='gmp_marker_data_$count' 
                                 value='$marker' style='width:400px'> 
                         </td>
                     </tr>
@@ -339,7 +437,7 @@ class GMP
                         </td>
                         <td>:</td>
                         <td>
-                            <textarea id='gmp_description_$count' name='gmp_description_$count' 
+                            <textarea id='gmp_description_data_$count' name='gmp_description_data_$count' 
                                 style='width:400px'>$desc</textarea>
                         </td>
                     </tr>
@@ -349,7 +447,7 @@ class GMP
                         </td>
                         <td>:</td>
                         <td>
-                            <textarea id='gmp_address_$count' name='gmp_address_$count' 
+                            <textarea id='gmp_address_data_$count' name='gmp_address_data_$count' 
                                 style='width:400px;height:100px'>$address</textarea>
                         </td>
                     </tr>
@@ -359,7 +457,7 @@ class GMP
                         </td>
                         <td style='width:30px'>:</td>
                         <td>
-                            <input type='text' id='gmp_width_$count' name='gmp_width_$count' 
+                            <input type='text' id='gmp_width_data_$count' name='gmp_width_data_$count' 
                                 value='$width' style='width:400px'> 
                         </td>
                     </tr>
@@ -369,7 +467,7 @@ class GMP
                         </td>
                         <td style='width:30px'>:</td>
                         <td>
-                            <input type='text' id='gmp_height_$count' name='gmp_height_$count' 
+                            <input type='text' id='gmp_height_data_$count' name='gmp_height_data_$count' 
                                 value='$height' style='width:400px'> 
                         </td>
                     </tr>
@@ -410,63 +508,11 @@ class GMP
                 return $post_id;
         }
 
-        $data     = array();
-
-        foreach($_POST as $key => $value)
-        {            
-            if(strrpos($key,'gmp_marker') !== false)
-            {
-                $index = substr($key,  strlen('gmp_marker_'));
-
-                if(!isset($data[$index]))
-                    $data[$index] = array();
-
-                $data[$index]['gmp_marker'] = $value;
-            }
-            elseif(strrpos($key,'gmp_description') !== false)
-            {
-                $index = substr($key,  strlen('gmp_description_'));
-
-                if(!isset($data[$index]))
-                    $data[$index] = array();
-
-                $data[$index]['gmp_description'] = $value;
-            }
-            elseif(strrpos($key,'gmp_address') !== false)
-            {
-                $index = substr($key,  strlen('gmp_address_'));
-
-                if(!isset($data[$index]))
-                    $data[$index] = array();
-
-                $data[$index]['gmp_address'] = $value;
-            }
-            //New Feature on 0.3
-            elseif(strrpos($key,'gmp_width') !== false)
-            {
-                $index = substr($key,  strlen('gmp_width_'));
-
-                if(!isset($data[$index]))
-                    $data[$index] = array();
-
-                $data[$index]['gmp_width'] = $value;
-            }
-            elseif(strrpos($key,'gmp_height') !== false)
-            {
-                $index = substr($key,  strlen('gmp_height_'));
-
-                if(!isset($data[$index]))
-                    $data[$index] = array();
-
-                $data[$index]['gmp_height'] = $value;
-            }
-        }
-
         $metadata = has_meta($post_id);        
-
+        
         foreach($metadata as $entry)
         {
-            $meta_key = esc_attr($entry->meta_key);
+            $meta_key = esc_attr($entry['meta_key']);
 
             if(strrpos($meta_key,'gmp_marker') !== false)
             {
@@ -491,27 +537,81 @@ class GMP
             }
         }
 
+        $data     = array();
+
+        foreach($_POST as $key => $value)
+        {            
+            if(strrpos($key,'gmp_marker_data') !== false)
+            {
+                $index = substr($key,  strlen('gmp_marker_data_'));
+
+                if(!isset($data[$index]))
+                    $data[$index] = array();
+
+                $data[$index]['gmp_marker'] = $value;
+            }
+            elseif(strrpos($key,'gmp_description_data') !== false)
+            {
+                $index = substr($key,  strlen('gmp_description_data_'));
+
+                if(!isset($data[$index]))
+                    $data[$index] = array();
+
+                $data[$index]['gmp_description'] = $value;
+            }
+            elseif(strrpos($key,'gmp_address_data') !== false)
+            {
+                $index = substr($key,  strlen('gmp_address_data_'));
+
+                if(!isset($data[$index]))
+                    $data[$index] = array();
+
+                $data[$index]['gmp_address'] = $value;
+            }
+            //New Feature on 0.3
+            elseif(strrpos($key,'gmp_width_data') !== false)
+            {
+                $index = substr($key,  strlen('gmp_width_data_'));
+
+                if(!isset($data[$index]))
+                    $data[$index] = array();
+
+                $data[$index]['gmp_width'] = $value;
+            }
+            elseif(strrpos($key,'gmp_height_data') !== false)
+            {
+                $index = substr($key,  strlen('gmp_height_data_'));
+
+                if(!isset($data[$index]))
+                    $data[$index] = array();
+
+                $data[$index]['gmp_height'] = $value;
+            }
+        }
+
         $count = 0;
 
         foreach($data as $item)
-        {
-            $count++;
-
+        {                       
             $marker  = $item['gmp_marker'];
             $desc    = $item['gmp_description'];
             $address = $item['gmp_address'];
 
             //New Feature on 0.3
-            $width   = isset($item['gmp_width']) ?$item['gmp_width']:$this->width;
+            $width   = isset($item['gmp_width']) ?$item['gmp_width'] :$this->width;
             $height  = isset($item['gmp_height'])?$item['gmp_height']:$this->height;
             
-            add_post_meta($post_id, "gmp_marker_$count"     , $marker, true);
-            add_post_meta($post_id, "gmp_description_$count", $desc, true);
-            add_post_meta($post_id, "gmp_address_$count"    , $address, true);
+            if($address != '')
+            {
+                $count++;
+                add_post_meta($post_id, "gmp_marker_$count"     , $marker, true);
+                add_post_meta($post_id, "gmp_description_$count", $desc, true);
+                add_post_meta($post_id, "gmp_address_$count"    , $address, true);
 
-            //New Feature on 0.3
-            add_post_meta($post_id, "gmp_height_$count"     , $height, true);
-            add_post_meta($post_id, "gmp_width_$count"      , $width, true);
+                //New Feature on 0.3
+                add_post_meta($post_id, "gmp_height_$count"     , $height, true);
+                add_post_meta($post_id, "gmp_width_$count"      , $width, true);
+            }
         }
     }
 }

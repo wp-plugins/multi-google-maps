@@ -15,7 +15,7 @@ function removeMap(id)
 			'			</td> ' +
 			'			<td style="width: 30px;">:</td> ' +
 			'			<td> ' +
-			'				<input type="text" style="width: 400px;" value="" name="gmp_marker_1" id="gmp_marker_1" sourceindex="628">  ' +
+			'				<input type="text" style="width: 400px;" value="" name="gmp_marker_data_1" id="gmp_marker_data_1" sourceindex="628">  ' +
 			'			</td> ' +
 			'		</tr> ' +
 			'		<tr style="vertical-align: top;"> ' +
@@ -24,7 +24,7 @@ function removeMap(id)
 			'			</td> ' +
 			'			<td>:</td> ' +
 			'			<td> ' +
-			'				<textarea style="width: 400px;" name="gmp_description_1" id="gmp_description_1" sourceindex="633"></textarea> ' +
+			'				<textarea style="width: 400px;" name="gmp_description_data_1" id="gmp_description_data_1" sourceindex="633"></textarea> ' +
 			'			</td> ' +
 			'		</tr> ' +
 			'		<tr style="vertical-align: top;"> ' +
@@ -33,7 +33,7 @@ function removeMap(id)
 			'			</td> ' +
 			'			<td>:</td> ' +
 			'			<td> ' +
-			'				<textarea style="width: 400px; height: 100px;" name="gmp_address_1" id="gmp_address_1" sourceindex="638"></textarea> ' +
+			'				<textarea style="width: 400px; height: 100px;" name="gmp_address_data_1" id="gmp_address_data_1" sourceindex="638"></textarea> ' +
 			'			</td> ' +
 			'		</tr> ';
 
@@ -44,23 +44,18 @@ function removeMap(id)
 			'			</td> ' +
 			'			<td>:</td> ' +
 			'			<td> ' +
-			'				<input type="text" style="width: 400px;" value="" name="gmp_marker_1" id="gmp_marker_1" sourceindex="628">  ' +
+			'				<input type="text" style="width: 400px;" value="" name="gmp_width_data_1" id="gmp_width_data_1" sourceindex="628">  ' +
 			'			</td> ' +
+			'		</tr> ';
 			'		<tr style="vertical-align: top;"> ' +
 			'			<td> ' +
 			'				Height ' +
 			'			</td> ' +
 			'			<td>:</td> ' +
 			'			<td> ' +
-			'				<textarea style="width: 400px;" name="gmp_description_1" id="gmp_description_1" sourceindex="633"></textarea> ' +
+			'				<input type="text" style="width: 400px;" name="gmp_height_1" id="gmp_height_1" sourceindex="633">' +
 			'			</td> ' +
-
-
-
-
-
-
-
+			'		</tr> ';
 			'	</tbody></table> ' +
 			'  <div style="text-align: right;"> '+
             '    <input type="button" value="Add this Map into Post" onclick="send_to_editor(&quot;[GMP-Map]&quot;);" sourceindex="641"> '+
@@ -90,13 +85,13 @@ function addNewMap()
 
 	newObj.innerHTML = ''+
 		'	<table> ' +
-		'		<tbody><tr style="vertical-align: top;"> ' +
+		'		<tr style="vertical-align: top;"> ' +
 		'			<td style="width: 100px;"> ' +
 		'				Name ' +
 		'			</td> ' +
 		'			<td style="width: 30px;">:</td> ' +
 		'			<td> ' +
-		'				<input type="text" style="width: 400px;" value="" name="gmp_marker_' + newItemID + '" id="gmp_marker_' + newItemID + '" sourceindex="628">  ' +
+		'				<input type="text" style="width: 400px;" value="" name="gmp_marker_data_' + newItemID + '" id="gmp_marker_data_' + newItemID + '" sourceindex="628">  ' +
 		'			</td> ' +
 		'		</tr> ' +
 		'		<tr style="vertical-align: top;"> ' +
@@ -105,7 +100,7 @@ function addNewMap()
 		'			</td> ' +
 		'			<td>:</td> ' +
 		'			<td> ' +
-		'				<textarea style="width: 400px;" name="gmp_description_' + newItemID + '" id="gmp_description_' + newItemID + '" sourceindex="633"></textarea> ' +
+		'				<textarea style="width: 400px;" name="gmp_description_data_' + newItemID + '" id="gmp_description_data_' + newItemID + '" sourceindex="633"></textarea> ' +
 		'			</td> ' +
 		'		</tr> ' +
 		'		<tr style="vertical-align: top;"> ' +
@@ -114,10 +109,28 @@ function addNewMap()
 		'			</td> ' +
 		'			<td>:</td> ' +
 		'			<td> ' +
-		'				<textarea style="width: 400px; height: 100px;" name="gmp_address_' + newItemID + '" id="gmp_address_' + newItemID + '" sourceindex="638"></textarea> ' +
+		'				<textarea style="width: 400px; height: 100px;" name="gmp_address_data_' + newItemID + '" id="gmp_address_data_' + newItemID + '" sourceindex="638"></textarea> ' +
+		'			</td> ' +
+		'		</tr> ' + 
+		'		<tr style="vertical-align: top;"> ' +
+		'			<td> ' +
+		'				Width ' +
+		'			</td> ' +
+		'			<td>:</td> ' +
+		'			<td> ' +
+		'				<input type="text" style="width: 400px;" value="" name="gmp_width_data_' + newItemID + '" id="gmp_width_data_' + newItemID + '" sourceindex="628">  ' +
+		'			</td> ' +
+		'		</tr> '  +
+		'		<tr style="vertical-align: top;"> ' +
+		'			<td> ' +
+		'				Height ' +
+		'			</td> ' +
+		'			<td>:</td> ' +
+		'			<td> ' +
+		'				<input type="text" style="width: 400px;" name="gmp_height_' + newItemID + '" id="gmp_height_' + newItemID + '" sourceindex="633">' +
 		'			</td> ' +
 		'		</tr> ' +
-		'	</tbody></table> ' +
+		'  </table> ' +
 		'  <div style="text-align: right;"> '+
 		'    <input type="button" value="Add this Map into Post" onclick="send_to_editor(&quot;[GMP-Map]&quot;);" sourceindex="641"> '+
 		'    <input type="button" value="Delete this Map" onclick="removeMap(\'gmpObj_' + newItemID + '\');" sourceindex="642"> '+
