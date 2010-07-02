@@ -47,11 +47,11 @@ Next version, this plug-in supports to display Multi Google Map on Popup.
 
 == Screenshots == 
 
-* screenshot-1.png
-* screenshot-2.png
-* screenshot-3.png
-* screenshot-4.png
-* screenshot-5.png
-* screenshot-6.png
-* screenshot-7.png
+1. Multi Google Maps Plug-in 
+1. Multi Google Maps Plug-in 
+1. Initial Post
+1. Entering Data in Google Map Example
+1. Sample Post Example
+1. Sample Post Example
+1. Sample Post Example
 
