@@ -45,8 +45,13 @@ Next version, this plug-in supports to display Multi Google Map on Popup.
 = 0.2.2 =
 * Fix readme.txt
 
-
-== Upgrade Notice == 
-
-
 == Screenshots == 
+
+* screenshot-1.png
+* screenshot-2.png
+* screenshot-3.png
+* screenshot-4.png
+* screenshot-5.png
+* screenshot-6.png
+* screenshot-7.png
+
