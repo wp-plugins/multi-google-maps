@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=FZQVH
 Tags: maps, google, google maps, shortcodes, multi google maps, address
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag  : 0.4.3
+Stable tag  : 0.4.4
 
 This is first plug-in that allows you to insert Multi Google Map V.3 Objects into your post/blog, No require Google Map API Key .
 
@@ -14,6 +14,9 @@ This is first plug-in that allows you to insert Multi Google Map V.3 Objects int
 Next version, this plug-in supports to display Multi Google Map on Popup.
 **By the way** , If you have any questions or suggestions, please feel free to contact me. (siripol.n at gmail dot com)
 
+**Donate Link**
+If you wish to donate, you can donate to my paypl with click <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=FZQVHASAY69CC&lc=TH&item_name=google%20map%20plugin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted">here</a>.
+Thanks to your support.
 
 == Requirements ==
 
@@ -25,10 +28,6 @@ Next version, this plug-in supports to display Multi Google Map on Popup.
 1. Verify that you have PHP5, which is required for this plugin.
 1. Upload the whole 'multi-google-maps' directory to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-
-== Frequently Asked Questions == 
-
-= How to insert Google Map =
 
 == Changelog == 
 
@@ -58,6 +57,17 @@ Next version, this plug-in supports to display Multi Google Map on Popup.
 
 = 0.4.3 =
 * Add file header
+
+= 0.4.4 =
+* Update readme.txt
+
+== To be Release == 
+= 0.5= 
+* Map zoom in level setting
+
+= 0.6 =
+* Change between Map Satellite & hybrid
+* Activate street view
 
 == Screenshots == 
 
