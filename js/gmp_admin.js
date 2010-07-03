@@ -9,7 +9,7 @@ function removeMap(id)
 		parentObj.innerHTML = ''+
 			'<div name="gmpObj" id="gmpObj_1"> ' +
 			'	<table> ' +
-			'		<tbody><tr style="vertical-align: top;"> ' +
+			'		<tr style="vertical-align: top;"> ' +
 			'			<td style="width: 100px;"> ' +
 			'				Name ' +
 			'			</td> ' +
@@ -35,9 +35,7 @@ function removeMap(id)
 			'			<td> ' +
 			'				<textarea style="width: 400px; height: 100px;" name="gmp_address_data_1" id="gmp_address_data_1" sourceindex="638"></textarea> ' +
 			'			</td> ' +
-			'		</tr> ';
-
-		parentObj.innerHTML += ''+
+			'		</tr> ' +
 			'		<tr style="vertical-align: top;"> ' +
 			'			<td> ' +
 			'				Width ' +
@@ -56,7 +54,7 @@ function removeMap(id)
 			'				<input type="text" style="width: 400px;" name="gmp_height_1" id="gmp_height_1" sourceindex="633">' +
 			'			</td> ' +
 			'		</tr> ';
-			'	</tbody></table> ' +
+			'		</table> ' +
 			'  <div style="text-align: right;"> '+
             '    <input type="button" value="Add this Map into Post" onclick="send_to_editor(&quot;[GMP-Map]&quot;);" sourceindex="641"> '+
             '    <input type="button" value="Delete this Map" onclick="removeMap(\'gmpObj_1\');" sourceindex="642"> '+
@@ -80,7 +78,8 @@ function addNewMap()
 		newItemID = Math.floor(Math.random()*1000);
 	}
 
-	newObj.id = 'gmpObj_' + newItemID;
+	newObj.id   = 'gmpObj_' + newItemID;
+	newObj.setAttribute('name', 'gmpObj');
 	parentObj.insertBefore(newObj, obj.nextSibling);
 
 	newObj.innerHTML = ''+

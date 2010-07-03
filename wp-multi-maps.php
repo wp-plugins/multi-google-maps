@@ -21,7 +21,7 @@ class GMP
     private $noPosts;    
     private $curMap;
     private $mapData;
-    private $googleMapApi = "http://maps.google.com/maps/api/js?sensor=false";
+    private $googleMapApi = "http://maps.google.com/maps/api/js?sensor=true";
     private $width        = 500;
     private $height       = 500;
 
