@@ -23,7 +23,7 @@ Next version, this plug-in supports to display Multi Google Map on Popup.
 == Installation ==
 
 1. Verify that you have PHP5, which is required for this plugin.
-1. Upload the whole 'google-maps-popup' directory to the `/wp-content/plugins/` directory
+1. Upload the whole 'multi-google-maps' directory to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
 == Frequently Asked Questions == 
@@ -68,4 +68,3 @@ Next version, this plug-in supports to display Multi Google Map on Popup.
 1. Sample Post Example
 1. Sample Post Example
 1. Sample Post Example
-
