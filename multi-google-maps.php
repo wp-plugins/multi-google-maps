@@ -3,8 +3,8 @@
 Plugin Name: Multi Google Maps
 Plugin URI: http://wordpress.org/extend/plugins/multi-google-maps/
 Description: This plugin supports to insert Multi Google Map V.3 Objects into your post.
-Version: 0.5.1
-Author: Siripol Noikajana
+Version: 0.5.2
+Author: Siripol
 Author URI: http://wordpress.org/extend/plugins/multi-google-maps/
 License: GPL2
 **/

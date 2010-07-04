@@ -67,6 +67,9 @@ Thanks to your support.
 = 0.5.1 = 
 * Fix add new map data
 
+= 0.5.2 = 
+* Fix map zoom
+
 == To be Release == 
 
 = 0.6 =

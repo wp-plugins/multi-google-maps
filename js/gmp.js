@@ -4,20 +4,20 @@ var mapMarker;
 
 geocoder = new google.maps.Geocoder();
 
-function drawMap(id, marker, desc, address, zoom) 
+function drawMap(id, marker, desc, address, mapZoom) 
 {
 	var latlng = new google.maps.LatLng(0, 0);
 
-	var mapOptions = {  'zoom'     : zoom,
-						'center'   : latlng,
-					    'mapTypeId': google.maps.MapTypeId.ROADMAP};
+	var mapOptions = {  zoom     : mapZoom,
+						center   : latlng,
+					    mapTypeId: google.maps.MapTypeId.ROADMAP};
 
 
 	var map = new google.maps.Map(document.getElementById(id), mapOptions);
 
 	if(!geocoder)
 	{
-		setTimeout(function(){drawMap(id, marker, desc, address, zoom)}, 500);
+		setTimeout(function(){drawMap(id, marker, desc, address, mapZoom)}, 500);
 	}
 	else
 	{		
@@ -28,7 +28,7 @@ function drawMap(id, marker, desc, address, zoom)
 
 				if(status == google.maps.GeocoderStatus.OK)					
 				{
-					map.zoom = 15;
+					map.zoom = mapZoom;
 					map.setCenter(results[0].geometry.location);
 
 					mapMarker = new google.maps.Marker({
