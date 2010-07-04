@@ -44,7 +44,7 @@ function removeMap(id)
 			'			<td> ' +
 			'				<input type="text" style="width: 400px;" value="" name="gmp_width_data_1" id="gmp_width_data_1" sourceindex="628">  ' +
 			'			</td> ' +
-			'		</tr> ';
+			'		</tr> ' +
 			'		<tr style="vertical-align: top;"> ' +
 			'			<td> ' +
 			'				Height ' +
@@ -53,7 +53,16 @@ function removeMap(id)
 			'			<td> ' +
 			'				<input type="text" style="width: 400px;" name="gmp_height_1" id="gmp_height_1" sourceindex="633">' +
 			'			</td> ' +
-			'		</tr> ';
+			'		</tr> ' +
+			'		<tr style="vertical-align: top;"> ' +
+			'			<td> ' +
+			'				Zoom ' +
+			'			</td> ' +
+			'			<td>:</td> ' +
+			'			<td> ' +
+			'				<input type="text" style="width: 400px;" name="gmp_zoom_1" id="gmp_zoom_1" sourceindex="633">' +
+			'			</td> ' +
+			'		</tr> ' +
 			'		</table> ' +
 			'  <div style="text-align: right;"> '+
             '    <input type="button" value="Add this Map into Post" onclick="send_to_editor(&quot;[GMP-Map]&quot;);" sourceindex="641"> '+
@@ -127,6 +136,15 @@ function addNewMap()
 		'			<td>:</td> ' +
 		'			<td> ' +
 		'				<input type="text" style="width: 400px;" name="gmp_height_' + newItemID + '" id="gmp_height_' + newItemID + '" sourceindex="633">' +
+		'			</td> ' +
+		'		</tr> ' +
+		'		<tr style="vertical-align: top;"> ' +
+		'			<td> ' +
+		'				Zoom ' +
+		'			</td> ' +
+		'			<td>:</td> ' +
+		'			<td> ' +
+		'				<input type="text" style="width: 400px;" name="gmp_zoom_' + newItemID + '" id="gmp_zoom_' + newItemID + '" sourceindex="633">' +
 		'			</td> ' +
 		'		</tr> ' +
 		'  </table> ' +

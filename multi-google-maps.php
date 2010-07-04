@@ -3,7 +3,7 @@
 Plugin Name: Multi Google Maps
 Plugin URI: http://wordpress.org/extend/plugins/multi-google-maps/
 Description: This plugin supports to insert Multi Google Map V.3 Objects into your post.
-Version: 0.4.4
+Version: 0.5
 Author: Siripol Noikajana
 Author URI: http://wordpress.org/extend/plugins/multi-google-maps/
 License: GPL2
@@ -24,6 +24,7 @@ class GMP
     private $googleMapApi = "http://maps.google.com/maps/api/js?sensor=true";
     private $width        = 500;
     private $height       = 500;
+    private $zoom         = 5;
 
     public function __construct()
     {
@@ -38,6 +39,7 @@ class GMP
 
         $this->width  = get_option('gmp_setting_width') !== false ?get_option('gmp_setting_width') :$this->width;
         $this->height = get_option('gmp_setting_height')!== false ?get_option('gmp_setting_height'):$this->height;
+        $this->zoom   = get_option('gmp_setting_zoom')  !== false ?get_option('gmp_setting_zoom')  :$this->zoom;
     }
 
     public function gmp_generate_map($attr, $content)
@@ -66,8 +68,10 @@ class GMP
 
                 $width   = isset($this->mapData[$thePost->ID][$key]['gmp_width']) ?$this->mapData[$thePost->ID][$key]['gmp_width'] :$this->width;
                 $height  = isset($this->mapData[$thePost->ID][$key]['gmp_height'])?$this->mapData[$thePost->ID][$key]['gmp_height']:$this->height;
+                $zoom    = isset($this->mapData[$thePost->ID][$key]['gmp_zoom'])  ?$this->mapData[$thePost->ID][$key]['gmp_zoom']  :$this->zoom;
                 $width  .= 'px';
                 $height .= 'px';
+
                 $this->curMap[$thePost->ID]++;
                 $mapId   = 'GMPmap_'.$thePost->ID.'_'.$this->curMap[$thePost->ID];                
 
@@ -83,7 +87,7 @@ class GMP
                                height: $height; 
                                z-index: 0;'>
                     </div>
-                    <script>drawMap('$mapId', '$marker', '$desc', '$address', 8);</script>";
+                    <script>drawMap('$mapId', '$marker', '$desc', '$address', $zoom);</script>";
                 }
             }
         }
@@ -148,21 +152,26 @@ class GMP
         {
             delete_option('gmp_setting_width');
             delete_option('gmp_setting_height');
+            delete_option('gmp_setting_zoom');
 
             $width  = isset($_POST['gmp_setting_width']) ? $_POST['gmp_setting_width'] : $this->width;
             $height = isset($_POST['gmp_setting_height'])? $_POST['gmp_setting_height']: $this->height;
+            $zoom   = isset($_POST['gmp_setting_zoom'])  ? $_POST['gmp_setting_zoom']  : $this->zoom;
             
             $width  = is_scalar($width)  && (int)$width  > 0? $width  : $this->width;
             $height = is_scalar($height) && (int)$height > 0? $height : $this->height;
+            $zoom   = is_scalar($zoom)   && (int)$zoom   > 0? $zoom   : $this->zoom;
 
             add_option('gmp_setting_height', $height);
-            add_option('gmp_setting_width', $width);
+            add_option('gmp_setting_width' , $width);
+            add_option('gmp_setting_zoom'  , $zoom);
 
         }               
         else
         {
             $width  = get_option('gmp_setting_width') !== false ?get_option('gmp_setting_width') :$this->width;
             $height = get_option('gmp_setting_height')!== false ?get_option('gmp_setting_height'):$this->height;
+            $zoom   = get_option('gmp_setting_zoom')  !== false ?get_option('gmp_setting_zoom')  :$this->zoom;
         }
 
         $html = "
@@ -203,6 +212,16 @@ class GMP
                                     <td>
                                         <input type='text' id='gmp_setting_height' name='gmp_setting_height' 
                                             value='$height' style='width:400px'> 
+                                    </td>
+                                </tr>
+                                <tr style='vertical-align:top'>
+                                    <td style='width:100px'>
+                                        Map Zoom
+                                    </td>
+                                    <td style='width:30px'>:</td>
+                                    <td>
+                                        <input type='text' id='gmp_setting_zoom' name='gmp_setting_zoom' 
+                                            value='$zoom' style='width:400px'> 
                                     </td>
                                 </tr>
                             </table>
@@ -295,6 +314,18 @@ class GMP
 
                 $data[$index]['gmp_height'] = get_post_meta($post_ID, $meta_key, true);
             }
+            elseif(strrpos($meta_key,'gmp_zoom') !== false)
+            {
+                $index = substr($meta_key,  strlen('gmp_zoom_'));
+
+                if(!isset($data[$index]))
+                {
+                    $data[$index] = array();
+                    $keys[]       = $index;
+                }
+
+                $data[$index]['gmp_zoom'] = get_post_meta($post_ID, $meta_key, true);
+            }
         }
 
         return $this->sortData($keys, $data);
@@ -337,11 +368,13 @@ class GMP
             $address = $item['gmp_address'];
 
             //New Feature on 0.3
-            $width  = isset($item['gmp_width'])?$item['gmp_width']:$this->width;
+            $width  = isset($item['gmp_width']) ?$item['gmp_width'] :$this->width;
             $height = isset($item['gmp_height'])?$item['gmp_height']:$this->height;
+            $zoom   = isset($item['gmp_zoom'])  ?$item['gmp_zoom']  :$this->zoom;
                   
             $width  = is_scalar($width)  && (int)$width  > 0? $width  : $this->width;
             $height = is_scalar($height) && (int)$height > 0? $height : $this->height;
+            $zoom   = is_scalar($zoom)   && (int)$zoom > 0  ? $zoom   : $this->zoom;
 
             $html .= "
             <div name='gmpObj' id='gmpObj_$count'>
@@ -397,6 +430,16 @@ class GMP
                         <td>
                             <input type='text' id='gmp_height_data_$count' name='gmp_height_data_$count' 
                                 value='$height' style='width:400px'> 
+                        </td>
+                    </tr>
+                    <tr style='vertical-align:top'>
+                        <td>
+                            Zoom
+                        </td>
+                        <td>:</td>
+                        <td>
+                            <input type='text' id='gmp_zoom_data_$count' name='gmp_zoom_data_$count' 
+                                value='$zoom' style='width:400px'> 
                         </td>
                     </tr>";
 
@@ -471,6 +514,16 @@ class GMP
                                 value='$height' style='width:400px'> 
                         </td>
                     </tr>
+                    <tr style='vertical-align:top'>
+                        <td style='width:100px'>
+                            Zoom
+                        </td>
+                        <td style='width:30px'>:</td>
+                        <td>
+                            <input type='text' id='gmp_zoom_data_$count' name='gmp_zoom_data_$count' 
+                                value='$zoom' style='width:400px'> 
+                        </td>
+                    </tr>
                 </table>
                 <div style='text-align:right'>
                     <input type='button' onclick='send_to_editor(\"[GMP-Map]\");' value='Add this Map into Post' />
@@ -535,6 +588,10 @@ class GMP
             {
                 delete_post_meta($post_id, $meta_key);
             }
+            elseif(strrpos($meta_key,'gmp_zoom') !== false)
+            {
+                delete_post_meta($post_id, $meta_key);
+            }
         }
 
         $data     = array();
@@ -587,6 +644,15 @@ class GMP
 
                 $data[$index]['gmp_height'] = $value;
             }
+            elseif(strrpos($key,'gmp_zoom_data') !== false)
+            {
+                $index = substr($key,  strlen('gmp_zoom_data_'));
+
+                if(!isset($data[$index]))
+                    $data[$index] = array();
+
+                $data[$index]['gmp_zoom'] = $value;
+            }
         }
 
         $count = 0;
@@ -600,6 +666,7 @@ class GMP
             //New Feature on 0.3
             $width   = isset($item['gmp_width']) ?$item['gmp_width'] :$this->width;
             $height  = isset($item['gmp_height'])?$item['gmp_height']:$this->height;
+            $zoom    = isset($item['gmp_zoom'])  ?$item['gmp_zoom']  :$this->zoom;
             
             if($address != '')
             {
@@ -611,6 +678,7 @@ class GMP
                 //New Feature on 0.3
                 add_post_meta($post_id, "gmp_height_$count"     , $height, true);
                 add_post_meta($post_id, "gmp_width_$count"      , $width, true);
+                add_post_meta($post_id, "gmp_zoom_$count"       , $zoom, true);
             }
         }
     }

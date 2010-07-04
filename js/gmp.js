@@ -6,15 +6,11 @@ geocoder = new google.maps.Geocoder();
 
 function drawMap(id, marker, desc, address, zoom) 
 {
-
-
 	var latlng = new google.maps.LatLng(0, 0);
 
-	var mapOptions = {
-	  zoom: 8,
-	  center: latlng,
-	  mapTypeId: google.maps.MapTypeId.ROADMAP
-	};
+	var mapOptions = {  'zoom'     : zoom,
+						'center'   : latlng,
+					    'mapTypeId': google.maps.MapTypeId.ROADMAP};
 
 
 	var map = new google.maps.Map(document.getElementById(id), mapOptions);
