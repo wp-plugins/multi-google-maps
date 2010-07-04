@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=FZQVH
 Tags: maps, google, google maps, shortcodes, multi google maps, address
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag  : 0.5
+Stable tag  : 0.5.1
 
 This is first plug-in that allows you to insert Multi Google Map V.3 Objects into your post/blog, No require Google Map API Key .
 
@@ -61,8 +61,11 @@ Thanks to your support.
 = 0.4.4 =
 * Update readme.txt
 
-= 0.5= 
+= 0.5.0 = 
 * Map zoom in level setting
+
+= 0.5.1 = 
+* Fix add new map data
 
 == To be Release == 
 
