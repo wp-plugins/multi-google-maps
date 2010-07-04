@@ -88,7 +88,7 @@ class GMP
             }
         }
 
-        return $html.addTwitterMessages('xxxxReuters_Biz');;
+        return $html;
     }
 
     public function gmp_init($thePosts)
