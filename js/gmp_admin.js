@@ -24,7 +24,7 @@ function removeMap(id)
 			'			</td> ' +
 			'			<td>:</td> ' +
 			'			<td> ' +
-			'				<textarea style="width: 400px;" name="gmp_description_data_1" id="gmp_description_data_1" sourceindex="633"></textarea> ' +
+			'				<textarea style="width: 400px;" name="gmp_description_data_1" id="gmp_description_data_1" ></textarea> ' +
 			'			</td> ' +
 			'		</tr> ' +
 			'		<tr style="vertical-align: top;"> ' +
@@ -51,7 +51,7 @@ function removeMap(id)
 			'			</td> ' +
 			'			<td>:</td> ' +
 			'			<td> ' +
-			'				<input type="text" style="width: 400px;" name="gmp_height_1" id="gmp_height_1" sourceindex="633">' +
+			'				<input type="text" style="width: 400px;" name="gmp_height_1" id="gmp_height_1" >' +
 			'			</td> ' +
 			'		</tr> ' +
 			'		<tr style="vertical-align: top;"> ' +
@@ -60,7 +60,16 @@ function removeMap(id)
 			'			</td> ' +
 			'			<td>:</td> ' +
 			'			<td> ' +
-			'				<input type="text" style="width: 400px;" name="gmp_zoom_1" id="gmp_zoom_1" sourceindex="633">' +
+			'				<input type="text" style="width: 400px;" name="gmp_zoom_1" id="gmp_zoom_1" >' +
+			'			</td> ' +
+			'		</tr> ' +
+			'		<tr style="vertical-align: top;"> ' +
+			'			<td> ' +
+			'				Has Street View Control ' +
+			'			</td> ' +
+			'			<td>:</td> ' +
+			'			<td> ' +
+			'				<input type="checkbox" value="true" name="gmp_streetviewcontrol_1" id="gmp_streetviewcontrol_1" >' +
 			'			</td> ' +
 			'		</tr> ' +
 			'		</table> ' +
@@ -108,7 +117,7 @@ function addNewMap()
 		'			</td> ' +
 		'			<td>:</td> ' +
 		'			<td> ' +
-		'				<textarea style="width: 400px;" name="gmp_description_data_' + newItemID + '" id="gmp_description_data_' + newItemID + '" sourceindex="633"></textarea> ' +
+		'				<textarea style="width: 400px;" name="gmp_description_data_' + newItemID + '" id="gmp_description_data_' + newItemID + '" ></textarea> ' +
 		'			</td> ' +
 		'		</tr> ' +
 		'		<tr style="vertical-align: top;"> ' +
@@ -135,7 +144,7 @@ function addNewMap()
 		'			</td> ' +
 		'			<td>:</td> ' +
 		'			<td> ' +
-		'				<input type="text" style="width: 400px;" name="gmp_height_' + newItemID + '" id="gmp_height_' + newItemID + '" sourceindex="633">' +
+		'				<input type="text" style="width: 400px;" name="gmp_height_' + newItemID + '" id="gmp_height_' + newItemID + '" >' +
 		'			</td> ' +
 		'		</tr> ' +
 		'		<tr style="vertical-align: top;"> ' +
@@ -144,7 +153,16 @@ function addNewMap()
 		'			</td> ' +
 		'			<td>:</td> ' +
 		'			<td> ' +
-		'				<input type="text" style="width: 400px;" name="gmp_zoom_' + newItemID + '" id="gmp_zoom_' + newItemID + '" sourceindex="633">' +
+		'				<input type="text" style="width: 400px;" name="gmp_zoom_' + newItemID + '" id="gmp_zoom_' + newItemID + '" >' +
+		'			</td> ' +
+		'		</tr> ' +
+		'		<tr style="vertical-align: top;"> ' +
+		'			<td> ' +
+		'				Has Street View Control ' +
+		'			</td> ' +
+		'			<td>:</td> ' +
+		'			<td> ' +
+		'				<input type="checkbox" value="true" name="gmp_streetviewcontrol_' + newItemID + '" id="gmp_streetviewcontrol_' + newItemID + '" >' +
 		'			</td> ' +
 		'		</tr> ' +
 		'  </table> ' +

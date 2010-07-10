@@ -4,20 +4,21 @@ var mapMarker;
 
 geocoder = new google.maps.Geocoder();
 
-function drawMap(id, marker, desc, address, mapZoom) 
+function drawMap(id, marker, desc, address, mapZoom, hasStreetViewControl) 
 {
 	var latlng = new google.maps.LatLng(0, 0);
 
-	var mapOptions = {  zoom     : mapZoom,
-						center   : latlng,
-					    mapTypeId: google.maps.MapTypeId.ROADMAP};
+	var mapOptions = {  zoom			 : mapZoom,
+						center			 : latlng,
+					    mapTypeId		 : google.maps.MapTypeId.ROADMAP,
+					    streetViewControl: hasStreetViewControl};
 
 
 	var map = new google.maps.Map(document.getElementById(id), mapOptions);
 
 	if(!geocoder)
 	{
-		setTimeout(function(){drawMap(id, marker, desc, address, mapZoom)}, 500);
+		setTimeout(function(){drawMap(id, marker, desc, address, mapZoom, hasStreetViewControl)}, 500);
 	}
 	else
 	{		
