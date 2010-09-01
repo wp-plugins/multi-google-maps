@@ -4,13 +4,24 @@ var mapMarker;
 
 geocoder = new google.maps.Geocoder();
 
-function drawMap(id, marker, desc, address, mapZoom, hasStreetViewControl) 
+function drawMap(id, marker, desc, address, mapZoom, hasStreetViewControl, mapTypeId) 
 {
 	var latlng = new google.maps.LatLng(0, 0);
+       
+    if(mapTypeId == "SATELLITE")
+        GGmapTypeId = google.maps.MapTypeId.SATELLITE;
+    else if(mapTypeId == "HYBRID")
+        GGmapTypeId = google.maps.MapTypeId.HYBRID;
+    else if(mapTypeId == "TERRAIN")
+        GGmapTypeId = google.maps.MapTypeId.TERRAIN;
+    else
+        GGmapTypeId = google.maps.MapTypeId.ROADMAP;
+
+
 
 	var mapOptions = {  zoom			 : mapZoom,
 						center			 : latlng,
-					    mapTypeId		 : google.maps.MapTypeId.ROADMAP,
+					    mapTypeId		 : GGmapTypeId,
 					    streetViewControl: hasStreetViewControl};
 
 
@@ -18,7 +29,7 @@ function drawMap(id, marker, desc, address, mapZoom, hasStreetViewControl)
 
 	if(!geocoder)
 	{
-		setTimeout(function(){drawMap(id, marker, desc, address, mapZoom, hasStreetViewControl)}, 500);
+		setTimeout(function(){drawMap(id, marker, desc, address, mapZoom, hasStreetViewControl, mapTypeId)}, 500);
 	}
 	else
 	{		

@@ -3,7 +3,7 @@
 Plugin Name: Multi Google Maps
 Plugin URI: http://wordpress.org/extend/plugins/multi-google-maps/
 Description: This plugin supports to insert Multi Google Map V.3 Objects into your post.
-Version: 0.6
+Version: 0.7
 Author: Siripol
 Author URI: http://wordpress.org/extend/plugins/multi-google-maps/
 License: GPL2
@@ -26,6 +26,7 @@ class GMP
     private $height       = 500;
     private $zoom         = 5;
     private $hasStreetViewControl = false;
+    private $mapType      = 'ROADMAP';
 
     public function __construct()
     {
@@ -72,12 +73,12 @@ class GMP
                 $zoom    = isset($this->mapData[$thePost->ID][$key]['gmp_zoom'])  ?$this->mapData[$thePost->ID][$key]['gmp_zoom']  :$this->zoom;
                 $width  .= 'px';
                 $height .= 'px';
-
+                $mapType = isset($this->mapData[$thePost->ID][$key]['gmp_mapType'])?$this->mapData[$thePost->ID][$key]['gmp_mapType']:'ROADMAP';
                 $this->curMap[$thePost->ID]++;
                 $mapId   = 'GMPmap_'.$thePost->ID.'_'.$this->curMap[$thePost->ID];                
-
+                
                 $hasStreetViewControl = isset($this->mapData[$thePost->ID][$key]['gmp_streetviewcontrol']) ? $this->mapData[$thePost->ID][$key]['gmp_streetviewcontrol'] : $this->hasStreetViewControl;
-                $hasStreetViewControl = $hasStreetViewControl == 'true'?1:0;  
+                $hasStreetViewControl = $hasStreetViewControl == 'true'?1:0;                  
 
                 if($address !== false)
                 {
@@ -91,7 +92,10 @@ class GMP
                                height: $height; 
                                z-index: 0;'>
                     </div>
-                    <script>drawMap('$mapId', '$marker', '$desc', '$address', $zoom, $hasStreetViewControl);</script>";
+                    <script>drawMap('$mapId', '$marker', 
+                                    '$desc',  '$address', 
+                                     $zoom,    $hasStreetViewControl, 
+                                    '$mapType');</script>";
                 }
             }
         }
@@ -342,6 +346,18 @@ class GMP
 
                 $data[$index]['gmp_streetviewcontrol'] = get_post_meta($post_ID, $meta_key, true);
             }
+            elseif(strrpos($meta_key,'gmp_mapType') !== false)
+            {
+                $index = substr($meta_key,  strlen('gmp_mapType_'));
+
+                if(!isset($data[$index]))
+                {
+                    $data[$index] = array();
+                    $keys[]       = $index;
+                }
+
+                $data[$index]['gmp_mapType'] = get_post_meta($post_ID, $meta_key, true);
+            }
         }
 
         return $this->sortData($keys, $data);
@@ -384,10 +400,13 @@ class GMP
             $address = $item['gmp_address'];
 
             //New Feature on 0.3
-            $width  = isset($item['gmp_width']) ?$item['gmp_width'] :$this->width;
-            $height = isset($item['gmp_height'])?$item['gmp_height']:$this->height;
-            $zoom   = isset($item['gmp_zoom'])  ?$item['gmp_zoom']  :$this->zoom;
+            $width  = isset($item['gmp_width'])  ?$item['gmp_width']  :$this->width;
+            $height = isset($item['gmp_height']) ?$item['gmp_height'] :$this->height;
+            $zoom   = isset($item['gmp_zoom'])   ?$item['gmp_zoom']   :$this->zoom;
+            $mapType= isset($item['gmp_mapType'])?$item['gmp_mapType']:'ROADMAP';
                   
+                  
+
             $width  = is_scalar($width)  && (int)$width  > 0? $width  : $this->width;
             $height = is_scalar($height) && (int)$height > 0? $height : $this->height;
             $zoom   = is_scalar($zoom)   && (int)$zoom > 0  ? $zoom   : $this->zoom;
@@ -469,6 +488,16 @@ class GMP
                         <td>
                             <input type='checkbox' id='gmp_streetviewcontrol_data_$count' name='gmp_streetviewcontrol_data_$count' 
                                 value='true' $hasStreetViewControl > 
+                        </td>
+                    </tr>
+                    <tr style='vertical-align:top'>
+                        <td>    
+                            Map Type [ROADMAP, SATELLITE, HYBRID, TERRAID]
+                        </td>
+                        <td>:</td>
+                        <td>
+                            <input type='text' id='gmp_mapType_data_$count' name='gmp_mapType_data_$count' 
+                                value='$mapType' style='width:400px'> 
                         </td>
                     </tr>";
 
@@ -563,6 +592,16 @@ class GMP
                                 value='true' $hasStreetViewControl > 
                         </td>
                     </tr>
+                    <tr style='vertical-align:top'>
+                        <td style='width:100px'>
+                            Map Type [ROADMAP, SATELLITE, HYBRID, TERRAID]
+                        </td>
+                        <td style='width:30px'>:</td>
+                        <td>
+                            <input type='text' id='gmp_mapType_data_$count' name='gmp_mapType_data_$count' 
+                                value='$mapType' style='width:400px'> 
+                        </td>
+                    </tr>
                 </table>
                 <div style='text-align:right'>
                     <input type='button' onclick='send_to_editor(\"[GMP-Map]\");' value='Add this Map into Post' />
@@ -632,6 +671,10 @@ class GMP
                 delete_post_meta($post_id, $meta_key);
             }
             elseif(strrpos($meta_key,'gmp_streetviewcontrol') !== false)
+            {
+                delete_post_meta($post_id, $meta_key);
+            }
+            elseif(strrpos($meta_key,'gmp_mapType') !== false)
             {
                 delete_post_meta($post_id, $meta_key);
             }
@@ -705,6 +748,15 @@ class GMP
 
                 $data[$index]['gmp_streetviewcontrol'] = $value;
             }
+            elseif(strrpos($key,'gmp_mapType') !== false)
+            {
+                $index = substr($key,  strlen('gmp_mapType_data_'));
+
+                if(!isset($data[$index]))
+                    $data[$index] = array();
+
+                $data[$index]['gmp_mapType'] = $value;
+            }
         }
 
         $count = 0;
@@ -716,9 +768,10 @@ class GMP
             $address = $item['gmp_address'];
 
             //New Feature on 0.3
-            $width   = isset($item['gmp_width']) ?$item['gmp_width'] :$this->width;
-            $height  = isset($item['gmp_height'])?$item['gmp_height']:$this->height;
-            $zoom    = isset($item['gmp_zoom'])  ?$item['gmp_zoom']  :$this->zoom;
+            $width   = isset($item['gmp_width'])  ?$item['gmp_width']  :$this->width;
+            $height  = isset($item['gmp_height']) ?$item['gmp_height'] :$this->height;
+            $zoom    = isset($item['gmp_zoom'])   ?$item['gmp_zoom']   :$this->zoom;
+            $mapType = isset($item['gmp_mapType'])?$item['gmp_mapType']:$this->mapType;
             $hasStreetViewControl = isset($item['gmp_streetviewcontrol']) ? $item['gmp_streetviewcontrol'] : $this->hasStreetViewControl;
             
             
@@ -734,6 +787,7 @@ class GMP
                 add_post_meta($post_id, "gmp_width_$count"      , $width, true);
                 add_post_meta($post_id, "gmp_zoom_$count"       , $zoom, true);
                 add_post_meta($post_id, "gmp_streetviewcontrol_$count" , $hasStreetViewControl, true);
+                add_post_meta($post_id, "gmp_mapType_$count"    , $mapType, true);
             }
         }
     }
